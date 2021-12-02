@@ -1,12 +1,14 @@
-import './index.css'
+import { Store } from "../../store"
 
 /**
  * TODO List
  */
 export default function TodoList() {
   return (
-    <div className="todolist">
-      <h1>TODO LIST</h1>
-    </div>
+    <Store>
+      <div>
+        <h1>TODO LIST</h1>
+      </div>
+    </Store>
   )
 }
