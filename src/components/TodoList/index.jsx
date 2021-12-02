@@ -1,3 +1,5 @@
+import ListToDoItems from "./ListToDoItems"
+import InputToDo from "./InputToDo"
 import { Store } from "../../store"
 
 /**
@@ -8,6 +10,8 @@ export default function TodoList() {
     <Store>
       <div>
         <h1>TODO LIST</h1>
+        <InputToDo/>
+        <ListToDoItems/>
       </div>
     </Store>
   )
