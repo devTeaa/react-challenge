@@ -1,0 +1,34 @@
+#!/bin/bash
+PASS=true
+STAGED_FILES=$(git diff --diff-filter=d --cached --name-only | grep -E '\.(js|jsx)$') 
+
+if [[ "$STAGED_FILES" = "" ]]; then
+  exit 0
+fi
+
+echo -e "\033[0;33m☐ Running pre-commmit-hooks:\e[0m"
+
+for FILE in $STAGED_FILES
+do
+  PRE_LINT_HASH=$(git hash-object "$FILE")
+  if [[ $FILE == *js ]]; then
+    ./node_modules/.bin/prettier-eslint --log-level 'silent' --write --eslint-config-path .eslintrc.js "$PWD/$FILE" || PASS=false
+    ./node_modules/.bin/eslint --fix "$PWD/$FILE" || PASS=false
+  elif [[ $FILE == *vue ]]; then
+    ./node_modules/.bin/stylelint --config .stylelintrc.json --fix "$PWD/$FILE" || PASS=false
+    ./node_modules/.bin/prettier-eslint --log-level 'silent' --write --eslint-config-path .eslintrc.js "$PWD/$FILE" || PASS=false
+    ./node_modules/.bin/eslint --fix "$PWD/$FILE" || PASS=false
+  fi
+
+  POST_LINT_HASH=$(git hash-object "$FILE")
+  if [[ "$PRE_LINT_HASH" != "$POST_LINT_HASH" ]]; then
+    PASS=false
+  fi
+done
+
+if ! $PASS; then
+  echo -e "\033[0;31m☒ pre-commmit-hooks failed, please check all the errors or stage all changes\e[0m"
+  exit 1
+fi
+
+exit $?
