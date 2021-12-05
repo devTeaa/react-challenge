@@ -1,7 +1,6 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
     'jest/globals': true,
   },
   globals: {
@@ -25,7 +24,7 @@ module.exports = {
     ecmaFeatures: {
       jsx: true,
     },
-    ecmaVersion: 12,
+    ecmaVersion: 2021,
     sourceType: 'module',
   },
   plugins: ['react', 'jest', 'prettier'],
@@ -35,7 +34,7 @@ module.exports = {
       'error',
       {
         trailingComma: 'all',
-        endOfLine: 'lf',
+        endOfLine: 'auto',
         semi: false,
         singleQuote: true,
         printWidth: 80,
